@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import "@dabaz/styles/globals.css";
 import "@dabaz/styles/tailwind.css";
+import "@dabaz/styles/globals.css";
 
 import { seo } from "@dabaz/lib/seo";
 
@@ -13,6 +13,7 @@ export const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://auth.dabaz.me"),
   title: {
     template: '%s - DabAuth',
     default: seo.title,
