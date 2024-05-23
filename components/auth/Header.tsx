@@ -10,7 +10,9 @@ export default function Header({
       <h1 className="text-3xl font-semibold">
         DabAuth
       </h1>
-      <p>{label}</p>
+      <p className="text-muted-foreground text-sm">
+        {label}
+      </p>
     </div>
   );
 };

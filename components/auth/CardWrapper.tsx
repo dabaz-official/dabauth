@@ -1,6 +1,14 @@
 "use client";
 
-import { Card } from "@dabaz/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader
+} from "@dabaz/components/ui/card";
+import Header from "@dabaz/components/auth/Header";
+import Social from "@dabaz/components/auth/Social";
+import BackButton from "@dabaz/components/auth/BackButton";
 
 interface CardWrapperProps {
   children: React.ReactNode;
@@ -19,7 +27,23 @@ export default function CardWrapper({
 }: CardWrapperProps) {
   return (
     <Card className="w-[400px] shadow-md">
-      {children}
+      <CardHeader>
+        <Header label={headerLabel} />
+      </CardHeader>
+      <CardContent>
+        {children}
+      </CardContent>
+      {showSocial && (
+        <CardFooter>
+          <Social />
+        </CardFooter>
+      )}
+      <CardFooter>
+        <BackButton
+          label={backButtonLabel}
+          href={backButtonHref}
+        />
+      </CardFooter>
     </Card>
   );
 };
