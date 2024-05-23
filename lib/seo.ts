@@ -7,6 +7,6 @@ export const seo = {
       : "http://localhost:3000"
   ),
   imageSrc: "https://auth.dabaz.me/images/home/opengraph-image.jpg",
-  imageAlt: "DabPython logo featuring a stylized 'dp' symbol on the left and the text 'DabPython' on the right, set against a gradient blue background.",
+  imageAlt: "DabAuth logo featuring a stylized keyhole symbol on the left and the text 'DabAuth' on the right, set against a dark gradient background.",
   siteName: "DabAuth",
 } as const;
