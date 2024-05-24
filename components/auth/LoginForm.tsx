@@ -1,6 +1,39 @@
+"use client";
+
+import * as z from "zod";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { LoginSchema } from "@dabaz/schemas";
 import CardWrapper from "@dabaz/components/auth/CardWrapper";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@dabaz/components/ui/form";
+import { Input } from "@dabaz/components/ui/input";
+import { Button } from "@dabaz/components/ui/button";
+import FormError from "@dabaz/components/auth/FormError";
+import FormSuccess from "@dabaz/components/auth/FormSuccess";
+import login from "@dabaz/actions/login";
 
 export default function LoginForm() {
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    login(values);
+  }
+
   return (
     <CardWrapper
       headerLabel="Welcome back"
@@ -8,7 +41,61 @@ export default function LoginForm() {
       backButtonHref="/auth/register"
       showSocial
     >
-      Login
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
+          <div className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Email
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="dabaz@example.com"
+                      type="email"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="********"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormSuccess message="" />
+          <FormError message="" />
+          <Button
+            type="submit"
+            className="w-full"
+          >
+            Login
+          </Button>
+        </form>
+      </Form>
     </CardWrapper>
   );
 };
