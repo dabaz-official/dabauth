@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -22,6 +22,11 @@ import FormSuccess from "@dabaz/components/auth/FormSuccess";
 import login from "@dabaz/actions/login";
 
 export default function LoginForm() {
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -31,8 +36,17 @@ export default function LoginForm() {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    login(values);
-  }
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      login(values)
+        .then((data) => {
+          setError(data.error);
+          setSuccess(data.success);
+        });
+    });
+  };
 
   return (
     <CardWrapper
@@ -58,6 +72,7 @@ export default function LoginForm() {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       placeholder="dabaz@example.com"
                       type="email"
                     />
@@ -77,6 +92,7 @@ export default function LoginForm() {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       placeholder="********"
                       type="password"
                     />
@@ -86,9 +102,10 @@ export default function LoginForm() {
               )}
             />
           </div>
-          <FormSuccess message="" />
-          <FormError message="" />
+          <FormSuccess message={success} />
+          <FormError message={error} />
           <Button
+            disabled={isPending}
             type="submit"
             className="w-full"
           >
