@@ -7,11 +7,9 @@ import { LoginSchema } from "@dabaz/schemas";
 export default async function login(values: z.infer<typeof LoginSchema>) {
   const validatedFields = LoginSchema.safeParse(values);
 
-  //if (!validatedFields.success) {
-    // TODO: handle error
+  if (!validatedFields.success) {
     return { error: "Invalid fields" };
-  //}
+  }
 
-  // TODO: login user
   return { success: "Email sent!" };
 };
